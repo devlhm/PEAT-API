@@ -3,8 +3,11 @@ import cors from 'cors'
 import morgan from 'morgan'
 import bodyParser from 'body-parser';
 
-//router imports
-import { router as petRouter } from './routes/pet.route';
+//controller imports
+import { PetController } from './controllers/PetController';
+
+//middleware imports
+import checkAuth from './middlewares/checkAuth';
 
 const PORT = process.env.PORT || 4000;
 
@@ -17,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 //routes
-app.use('/pet', petRouter);
+app.use('/pet', checkAuth, new PetController().router);
 
 //start server
 app.listen(PORT, () => {
