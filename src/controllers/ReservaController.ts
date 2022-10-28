@@ -1,14 +1,15 @@
-import { ResourceController } from "./ResourceController";
-import { Pet, PetModel } from "../models/PetModel";
 import { Request, Response } from "express";
-export class PetController extends ResourceController<Pet> {
-	protected model = new PetModel();
+import { Reserva, ReservaModel } from "../models/ReservaModel";
+import { ResourceController } from "./ResourceController";
+
+export class ReservaController extends ResourceController<Reserva> {
+	protected model = new ReservaModel();
 
 	protected async add(req: Request, res: Response): Promise<void> {
 		const docData = req.body.data;
 
 		try {
-			await this.model.create(docData, req.userId);
+			await this.model.create(docData, req.params.estabelecimento_id);
 			res.sendStatus(200);
 		} catch (err) {
 			res.status(400).json({ message: err });
@@ -16,7 +17,10 @@ export class PetController extends ResourceController<Pet> {
 	}
 
 	protected async getOne(req: Request, res: Response): Promise<void> {
-		const doc = await this.model.find(req.params.id, req.userId);
+		const doc = await this.model.find(
+			req.params.id,
+			req.params.estabelecimento_id
+		);
 
 		if (doc) {
 			res.status(200).json(doc);
@@ -37,7 +41,12 @@ export class PetController extends ResourceController<Pet> {
 			return;
 		}
 
-		const docs = await this.model.findAll(limit, offset, req.userId);
+		const docs = await this.model.findAll(
+			limit,
+			offset,
+			req.params.estabelecimento_id
+		);
+
 		if (docs) {
 			res.status(200).json(docs);
 		} else {
@@ -46,7 +55,10 @@ export class PetController extends ResourceController<Pet> {
 	}
 
 	protected async erase(req: Request, res: Response): Promise<void> {
-		const result = await this.model.remove(req.params.id, req.userId);
+		const result = await this.model.remove(
+			req.params.id,
+			req.params.estabelecimento_id
+		);
 
 		if (result) {
 			res.sendStatus(200);
@@ -59,7 +71,7 @@ export class PetController extends ResourceController<Pet> {
 		const result = await this.model.update(
 			req.body.data,
 			req.params.id,
-			req.userId
+			req.params.estabelecimento_id
 		);
 
 		if (result) {

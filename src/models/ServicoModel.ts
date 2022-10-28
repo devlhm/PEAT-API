@@ -8,20 +8,18 @@ import {
 import CollectionNames from "./CollectionNames";
 import { Model } from "./Model";
 
-export interface Pet {
+export interface Servico {
 	id?: string,
-	nome: string,
-	observacaoes: string,
-	raca: string,
-	tipo: string
+	nome: string;
+	preco: number;
 }
 
-export class PetModel implements Model<Pet> {
+export class ServicoModel implements Model<Servico> {
 	getPath(parentId?: string | undefined): string {
-		return `${CollectionNames.USUARIO}/${parentId}/${CollectionNames.PET}`;
+		return `${CollectionNames.ESTABELECIMENTO}/${parentId}/${CollectionNames.SERVICO}`;
 	}
 
-	find(id: string, parentId?: string): Promise<Pet | null> {
+	find(id: string, parentId?: string): Promise<Servico | null> {
 		return getDocById(this.getPath(parentId), id);
 	}
 
@@ -29,12 +27,12 @@ export class PetModel implements Model<Pet> {
 		limit: number = 0,
 		offset: number = 0,
 		parentId?: string
-	): Promise<Pet[] | null> {
+	): Promise<Servico[] | null> {
 		return getDocsFromCollection(this.getPath(parentId), offset, limit);
 	}
 
 	create(
-		docData: Pet,
+		docData: Servico,
 		parentId?: string
 	): Promise<
 		FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData>
@@ -42,7 +40,7 @@ export class PetModel implements Model<Pet> {
 		return addDoc(this.getPath(parentId), docData);
 	}
 
-	update(docData: Pet, id: string, parentId?: string): Promise<boolean> {
+	update(docData: Servico, id: string, parentId?: string): Promise<boolean> {
 		return updateDoc(this.getPath(parentId), docData, id);
 	}
 

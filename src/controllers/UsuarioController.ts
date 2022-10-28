@@ -1,8 +1,11 @@
-import { ResourceController } from "./ResourceController";
-import { Pet, PetModel } from "../models/PetModel";
 import { Request, Response } from "express";
-export class PetController extends ResourceController<Pet> {
-	protected model = new PetModel();
+import checkAuth from "../middlewares/checkAuth";
+import { Model } from "../models/Model";
+import { Usuario, UsuarioModel } from "../models/UsuarioModel";
+import { ResourceController } from "./ResourceController";
+
+export class UsuarioController extends ResourceController<Usuario> {
+	protected model: Model<Usuario> = new UsuarioModel();
 
 	protected async add(req: Request, res: Response): Promise<void> {
 		const docData = req.body.data;
@@ -37,7 +40,7 @@ export class PetController extends ResourceController<Pet> {
 			return;
 		}
 
-		const docs = await this.model.findAll(limit, offset, req.userId);
+		const docs = await this.model.findAll(limit, offset);
 		if (docs) {
 			res.status(200).json(docs);
 		} else {
@@ -46,7 +49,7 @@ export class PetController extends ResourceController<Pet> {
 	}
 
 	protected async erase(req: Request, res: Response): Promise<void> {
-		const result = await this.model.remove(req.params.id, req.userId);
+		const result = await this.model.remove(req.params.id);
 
 		if (result) {
 			res.sendStatus(200);
@@ -56,11 +59,7 @@ export class PetController extends ResourceController<Pet> {
 	}
 
 	protected async edit(req: Request, res: Response): Promise<void> {
-		const result = await this.model.update(
-			req.body.data,
-			req.params.id,
-			req.userId
-		);
+		const result = await this.model.update(req.body.data, req.params.id);
 
 		if (result) {
 			res.sendStatus(200);
