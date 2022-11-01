@@ -1,6 +1,7 @@
 import { ResourceController } from "./ResourceController";
 import { Pet, PetModel } from "../models/PetModel";
 import { Request, Response } from "express";
+import { upload } from "../index";
 export class PetController extends ResourceController<Pet> {
 	protected model = new PetModel();
 
@@ -67,5 +68,24 @@ export class PetController extends ResourceController<Pet> {
 		} else {
 			res.status(404).json({ message: "Registro não encontrado" });
 		}
+	}
+
+	private async savePicturePath(req: Request, res: Response): Promise<void> {
+		const result = await this.model.update(
+			{ nome_imagem: req.file!.filename } as Pet,
+			req.params.id,
+			req.userId
+		);
+
+		if (result) res.status(200).json({ message: "Picture uploaded" });
+		else res.status(404).json({ message: "Registro não encontrado" });
+	}
+
+	protected initializeRoutes(): void {
+		super.initializeRoutes();
+
+		this.router.post("/:id/picture", upload.single("picture"), (req, res) =>
+			this.savePicturePath(req, res)
+		);
 	}
 }

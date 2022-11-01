@@ -53,7 +53,7 @@ export const getDocsFromCollection = async <T extends Object>(
 
 export const updateDoc = async <T extends Object>(
 	path: string,
-	docData: T,
+	docData: any,
 	id: string,
 	converter?: FirebaseFirestore.FirestoreDataConverter<T>
 ): Promise<boolean> => {
@@ -63,7 +63,7 @@ export const updateDoc = async <T extends Object>(
 		: await ref.get();
 
 	if (doc.exists) {
-		converter ? ref.withConverter(converter).set(docData) : ref.set(docData);
+		converter ? ref.withConverter(converter).update(docData) : ref.update(docData);
 		return true;
 	} else return false;
 };

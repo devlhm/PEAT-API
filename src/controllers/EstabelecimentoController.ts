@@ -5,6 +5,7 @@ import {
 } from "../models/EstabelecimentoModel";
 import { ResourceController } from "./ResourceController";
 import { Model } from "../models/Model";
+import { upload } from "./../index";
 export class EstabelecimentoController extends ResourceController<Estabelecimento> {
 	protected model: Model<Estabelecimento> = new EstabelecimentoModel();
 
@@ -30,7 +31,6 @@ export class EstabelecimentoController extends ResourceController<Estabeleciment
 	}
 
 	protected async getAll(req: Request, res: Response): Promise<void> {
-
 		let limit: number;
 		let offset: number;
 
@@ -61,15 +61,42 @@ export class EstabelecimentoController extends ResourceController<Estabeleciment
 	}
 
 	protected async edit(req: Request, res: Response): Promise<void> {
-		const result = await this.model.update(
-			req.body.data,
-			req.params.id,
-		);
+		const result = await this.model.update(req.body.data, req.params.id);
 
 		if (result) {
 			res.sendStatus(200);
 		} else {
 			res.status(404).json({ message: "Registro não encontrado" });
 		}
+	}
+
+	private async savePicturesPath(req: Request, res: Response): Promise<void> {
+		const files = req.files! as Express.Multer.File[];
+		const fileNames: string[] = [];
+
+		for (let i = 0; i < files.length; i++) {
+			const element = files[i];
+
+			fileNames.push(element.filename);
+		}
+
+		const result = await this.model.update(
+			{ nome_imagens: fileNames } as Estabelecimento,
+			req.params.id,
+			req.userId
+		);
+
+		if (result) res.status(200).json({ message: "Picture uploaded" });
+		else res.status(404).json({ message: "Registro não encontrado" });
+	}
+
+	protected initializeRoutes(): void {
+		super.initializeRoutes();
+
+		this.router.post(
+			"/:id/pictures",
+			upload.array("pictures", 10),
+			(req, res) => this.savePicturesPath(req, res)
+		);
 	}
 }

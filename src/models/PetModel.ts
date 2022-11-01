@@ -13,7 +13,8 @@ export interface Pet {
 	nome: string,
 	observacaoes: string,
 	raca: string,
-	tipo: string
+	tipo: string,
+	nome_imagem?: string,
 }
 
 export class PetModel implements Model<Pet> {
@@ -50,3 +51,7 @@ export class PetModel implements Model<Pet> {
 		return deleteDoc(this.getPath(parentId), id);
 	}
 }
+
+// TODO: ADICIONAR SERVIMENTO ESTÁTICO DAS IMAGENS DO PET E ESTABELECIMENTO
+// TODO: SALVAR CAMINHO DA IMAGEM NO BANCO DE DADOS
+// TODO: SALVAR IMAGEM NO SERVIDOR

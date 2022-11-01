@@ -20,6 +20,8 @@ export interface Estabelecimento {
 	logradouro: string;
 	complemento: string;
 	numero: number;
+
+	nome_imagens?: string[];
 }
 
 export class EstabelecimentoModel implements Model<Estabelecimento> {
