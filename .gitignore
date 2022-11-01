@@ -1,2 +1,5 @@
 node_modules/
 uploads/
+.vercel
+dist/
+serviceAccountKey.json
