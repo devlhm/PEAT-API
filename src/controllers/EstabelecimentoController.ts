@@ -24,6 +24,13 @@ export class EstabelecimentoController extends ResourceController<Estabeleciment
 		const doc = await this.model.find(req.params.id, req.userId);
 
 		if (doc) {
+			const avaliacoes = doc.avaliacoes!
+			const sumAvaliacoes = avaliacoes.reduce((total, avaliacao) => total + avaliacao, 0);
+			const avaliacaoMedia = sumAvaliacoes / avaliacoes.length;
+			
+			doc.avaliacao_media = avaliacaoMedia;
+			delete doc.avaliacoes;
+
 			res.status(200).json(doc);
 		} else {
 			res.status(404).json({ message: "Registro não encontrado" });
@@ -86,17 +93,37 @@ export class EstabelecimentoController extends ResourceController<Estabeleciment
 			req.userId
 		);
 
-		if (result) res.status(200).json({ message: "Picture uploaded" });
+		if (result) res.status(200).json({ message: "Imagem salva" });
 		else res.status(404).json({ message: "Registro não encontrado" });
 	}
 
+	private async addRating(req: Request, res: Response): Promise<void> {
+		const estabelecimento = await this.model.find(req.params.id);
+
+		if (estabelecimento) {
+			const avaliacoes = estabelecimento.avaliacoes;
+			console.log(avaliacoes)
+			avaliacoes!.push(req.body.avaliacao);
+
+			await this.model.update(
+				{ avaliacoes } as Estabelecimento,
+				req.params.id,
+				req.userId
+			);
+
+			res.status(200).json({ message: "Avaliação salva" });
+		} else res.status(404).json({ message: "Registro não encontrado" });
+	}
+	
 	protected initializeRoutes(): void {
 		super.initializeRoutes();
 
-		this.router.post(
-			"/:id/pictures",
-			upload.array("pictures", 10),
-			(req, res) => this.savePicturesPath(req, res)
+		this.router.post("/:id/imagens", upload.array("pictures", 10), (req, res) =>
+			this.savePicturesPath(req, res)
 		);
+
+		this.router.post("/:id/avaliacao", (req, res) => {
+			this.addRating(req, res);
+		});
 	}
 }

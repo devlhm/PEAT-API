@@ -77,14 +77,14 @@ export class PetController extends ResourceController<Pet> {
 			req.userId
 		);
 
-		if (result) res.status(200).json({ message: "Picture uploaded" });
+		if (result) res.status(200).json({ message: "Imagem salva uploaded" });
 		else res.status(404).json({ message: "Registro não encontrado" });
 	}
 
 	protected initializeRoutes(): void {
 		super.initializeRoutes();
 
-		this.router.post("/:id/picture", upload.single("picture"), (req, res) =>
+		this.router.post("/:id/imagem", upload.single("picture"), (req, res) =>
 			this.savePicturePath(req, res)
 		);
 	}

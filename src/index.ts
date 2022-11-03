@@ -4,6 +4,7 @@ import morgan from "morgan";
 import bodyParser from "body-parser";
 import multer from "multer";
 import path from "path";
+import swaggerUi from "swagger-ui-express";
 
 //controller imports
 import { PetController } from "./controllers/PetController";
@@ -14,6 +15,7 @@ import { EstabelecimentoController } from "./controllers/EstabelecimentoControll
 import { ServicoController } from "./controllers/ServicoController";
 import { ReservaController } from "./controllers/ReservaController";
 import { UsuarioController } from "./controllers/UsuarioController";
+import swaggerDocs from './swagger.json'
 
 const PORT = process.env.PORT || 4000;
 
@@ -47,16 +49,18 @@ export const upload = multer({
 //routes
 app.use('/uploads', express.static(path.resolve(__dirname, '../uploads/')));
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
+
 app.use("/pet", checkAuth, new PetController().router);
 app.use("/estabelecimento", checkAuth, new EstabelecimentoController().router);
 app.use("/usuario", checkAuth, new UsuarioController().router);
 app.use(
-	"/servico/:estabelecimento_id",
+	"estabelecimento/:estabelecimento_id/servico/",
 	checkAuth,
 	new ServicoController().router
 );
 app.use(
-	"/reserva/:estabelecimento_id",
+	"estabelecimento/:estabelecimento_id/reserva/",
 	checkAuth,
 	new ReservaController().router
 );

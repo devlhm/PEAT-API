@@ -1,0 +1,1221 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"version": "1.0.0",
+		"title": "PEAT API",
+		"description": "API para o app de agendamento de serviços em petshop PEAT"
+	},
+	"paths": {
+		"/pet/{id}": {
+			"post": {
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Pet"
+							},
+							"example": {
+								"name": "Totó",
+								"raca": "Pinshcer",
+								"observacoes": "Alérgico à alguma coisa"
+							}
+						}
+					}
+				},
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minimum": 1
+						},
+						"description": "O id do pet"
+					}
+				],
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Edita um pet de um usuário",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK"
+					}
+				},
+				"tags": ["Pet"]
+			},
+			"get": {
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minimum": 1
+						},
+						"description": "O id do pet"
+					}
+				],
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Retorna um pet de um usuário",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Pet"
+								}
+							}
+						}
+					}
+				},
+				"tags": ["Pet"]
+			},
+			"delete": {
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minimum": 1
+						},
+						"description": "O id do pet"
+					}
+				],
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Deleta um pet de um usuário",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK"
+					}
+				},
+				"tags": ["Pet"]
+			}
+		},
+		"/pet/{id}/imagem": {
+			"post": {
+				"requestBody": {
+					"content": {
+						"image/all": {
+							"type": "string",
+							"format": "binary"
+						}
+					}
+				},
+				"summary": "Adiciona uma imagem do pet",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK"
+					}
+				},
+				"tags": ["Pet"]
+			}
+		},
+		"/pet": {
+			"post": {
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Cadastra um novo pet para um usuário",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK"
+					}
+				},
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Pet"
+							},
+							"example": {
+								"name": "Totó",
+								"raca": "Pinshcer",
+								"observacoes": "Alérgico à alguma coisa"
+							}
+						}
+					}
+				},
+				"tags": ["Pet"]
+			},
+			"get": {
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Retorna todos os pets de um usuário",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PetArray"
+								},
+								"example": [
+									{
+										"id": "DagASvfQ",
+										"name": "Totó",
+										"raca": "Pinshcer",
+										"observacoes": "Alérgico à alguma coisa",
+										"nome_imagem": "asfjaskj2139dk.jpg"
+									},
+									{
+										"id": "GaVQgwgS",
+										"name": "Lulu",
+										"raca": "Buldogue",
+										"observacoes": "Preto com listras brancas",
+										"nome_imagem": "qwieoqwi.jpg"
+									}
+								]
+							}
+						}
+					}
+				},
+				"tags": ["Pet"]
+			}
+		},
+		"/usuario/{id}": {
+			"post": {
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Usuario"
+							}
+						}
+					}
+				},
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minimum": 1
+						},
+						"description": "O id do usuário"
+					}
+				],
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Edita um usuário",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK"
+					}
+				},
+				"tags": ["Usuario"]
+			},
+			"get": {
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minimum": 1
+						},
+						"description": "O id do usuário"
+					}
+				],
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Retorna um usuário",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Usuario"
+								}
+							}
+						}
+					}
+				},
+				"tags": ["Usuario"]
+			},
+			"delete": {
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minimum": 1
+						},
+						"description": "O id do usuário"
+					}
+				],
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Deleta um usuário",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK"
+					}
+				},
+				"tags": ["Usuario"]
+			}
+		},
+		"/usuario": {
+			"post": {
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Cadastra um novo usuário",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK"
+					}
+				},
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Usuario"
+							}
+						}
+					}
+				},
+				"tags": ["Usuario"]
+			},
+			"get": {
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Retorna todos os usuários",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UsuarioArray"
+								},
+								"example": [
+									{
+										"nome_completo": "Fulano Ciclano Beltrano",
+										"cpf": "000.000.000-00",
+										"estado": "SP",
+										"cidade": "São Paulo",
+										"bairro": "Vila Maria",
+										"logradouro": "Rua Estrela",
+										"complemento": "AP 12 BL 3",
+										"numero": 99
+									},
+									{
+										"nome_completo": "Fulano Ciclano Beltrano",
+										"cpf": "000.000.000-00",
+										"estado": "SP",
+										"cidade": "São Paulo",
+										"bairro": "Vila Maria",
+										"logradouro": "Rua Estrela",
+										"complemento": "AP 12 BL 3",
+										"numero": 99
+									}
+								]
+							}
+						}
+					}
+				},
+				"tags": ["Usuario"]
+			}
+		},
+		"/estabelecimento": {
+			"post": {
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Cadastra um novo estabelecimento",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK"
+					}
+				},
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Estabelecimento"
+							},
+							"example": {
+								"nome": "Miau Petshop",
+								"avaliacao_media": 4.5,
+								"descricao": "Um petshop preocupado com o bem-estar do seu pet",
+								"nome_imagens": ["aASIapQl.jpg", "PsQMnrtT.jpg"],
+								"estado": "SP",
+								"cidade": "São Paulo",
+								"bairro": "Vila Maria",
+								"logradouro": "Rua Estrela",
+								"complemento": "AP 12 BL 3",
+								"numero": 99
+							}
+						}
+					}
+				},
+				"tags": ["Estabelecimento"]
+			},
+			"get": {
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Retorna todos os estabelecimentos",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/EstabelecimentoArray"
+								}
+							}
+						}
+					}
+				},
+				"tags": ["Estabelecimento"]
+			}
+		},
+		"/estabelecimento/{id}": {
+			"post": {
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Estabelecimento"
+							}
+						}
+					}
+				},
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minimum": 1
+						},
+						"description": "O id do estabelecimento"
+					}
+				],
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Edita um estabelecimento",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK"
+					}
+				},
+				"tags": ["Estabelecimento"]
+			},
+			"get": {
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minimum": 1
+						},
+						"description": "O id do estabelecimento"
+					}
+				],
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Retorna um estabelecimento",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Estabelecimento"
+								}
+							}
+						}
+					}
+				},
+				"tags": ["Estabelecimento"]
+			},
+			"delete": {
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minimum": 1
+						},
+						"description": "O id do estabelecimento"
+					}
+				],
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Deleta um estabelecimento",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK"
+					}
+				},
+				"tags": ["Estabelecimento"]
+			}
+		},
+		"/estabelecimento/{id}/imagens": {
+			"post": {
+				"requestBody": {
+					"content": {
+						"image/all": {
+							"type": "string",
+							"format": "binary"
+						}
+					}
+				},
+				"summary": "Adiciona uma ou mais imagens do estabelecimento",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK"
+					}
+				},
+				"tags": ["Estabelecimento"]
+			}
+		},
+		"/estabelecimento/{id}/avaliacao": {
+			"post": {
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"avaliacao": {
+										"type": "number",
+										"example": 4
+									}
+								}
+							}
+						}
+					}
+				},
+				"summary": "Adiciona uma avaliação ao estabelecimento",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK"
+					}
+				},
+				"tags": ["Estabelecimento"]
+			}
+		},
+		"/estabelecimento/{estabelecimento_id}/servico/{id}": {
+			"post": {
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Servico"
+							}
+						}
+					}
+				},
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minimum": 1
+						},
+						"description": "O id do serviço"
+					},
+					{
+						"in": "path",
+						"name": "estabelecimento_id",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minimum": 1
+						},
+						"description": "O id do estabelecimento"
+					}
+				],
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Edita um serviço",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK"
+					}
+				},
+				"tags": ["Servico"]
+			},
+			"get": {
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minimum": 1
+						},
+						"description": "O id do serviço"
+					},
+					{
+						"in": "path",
+						"name": "estabelecimento_id",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minimum": 1
+						},
+						"description": "O id do estabelecimento"
+					}
+				],
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Retorna um serviço",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Servico"
+								}
+							}
+						}
+					}
+				},
+				"tags": ["Servico"]
+			},
+			"delete": {
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minimum": 1
+						},
+						"description": "O id da reserva"
+					},
+					{
+						"in": "path",
+						"name": "estabelecimento_id",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minimum": 1
+						},
+						"description": "O id do serviço"
+					}
+				],
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Deleta um serviço",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK"
+					}
+				},
+				"tags": ["Servico"]
+			}
+		},
+		"/estabelecimento/{estabelecimento_id}/reserva/{id}": {
+			"post": {
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Reserva"
+							}
+						}
+					}
+				},
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minimum": 1
+						},
+						"description": "O id da reserva"
+					},
+					{
+						"in": "path",
+						"name": "estabelecimento_id",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minimum": 1
+						},
+						"description": "O id do estabelecimento"
+					}
+				],
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Edita uma reserva",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK"
+					}
+				},
+				"tags": ["Reserva"]
+			},
+			"get": {
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minimum": 1
+						},
+						"description": "O id da reserva"
+					},
+					{
+						"in": "path",
+						"name": "estabelecimento_id",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minimum": 1
+						},
+						"description": "O id do estabelecimento"
+					}
+				],
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Retorna uma reserva",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Reserva"
+								}
+							}
+						}
+					}
+				},
+				"tags": ["Reserva"]
+			},
+			"delete": {
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minimum": 1
+						},
+						"description": "O id da reserva"
+					},
+					{
+						"in": "path",
+						"name": "estabelecimento_id",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"minimum": 1
+						},
+						"description": "O id do estabelecimento"
+					}
+				],
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Deleta uma reserva",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK"
+					}
+				},
+				"tags": ["Reserva"]
+			}
+		},
+		"/estabelecimento/{estabelecimento_id}/reserva": {
+			"post": {
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Cadastra uma nova reserva",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK"
+					}
+				},
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Reserva"
+							},
+							"example": {
+								"nome": "Miau Petshop",
+								"avaliacao_media": 4.5,
+								"descricao": "Um petshop preocupado com o bem-estar do seu pet",
+								"nome_imagens": ["aASIapQl.jpg", "PsQMnrtT.jpg"],
+								"estado": "SP",
+								"cidade": "São Paulo",
+								"bairro": "Vila Maria",
+								"logradouro": "Rua Estrela",
+								"complemento": "AP 12 BL 3",
+								"numero": 99
+							}
+						}
+					}
+				},
+				"tags": ["Reserva"]
+			},
+			"get": {
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Retorna todas as reservas de um estabelecimento",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ReservaArray"
+								}
+							}
+						}
+					}
+				},
+				"tags": ["Reserva"]
+			}
+		},
+		"/estabelecimento/{estabelecimento_id}/servico": {
+			"post": {
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Cadastra um novo serviço",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK"
+					}
+				},
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Servico"
+							}
+						}
+					}
+				},
+				"tags": ["Servico"]
+			},
+			"get": {
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Retorna todos os serviços de um estabelecimento",
+				"responses": {
+					"401": {
+						"description": "Unauthorized"
+					},
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ServicoArray"
+								}
+							}
+						}
+					}
+				},
+				"tags": ["Servico"]
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"Pet": {
+				"type": "object",
+				"required": ["nome", "raca", "tipo"],
+				"properties": {
+					"nome": {
+						"type": "string",
+						"example": "Totó"
+					},
+					"id": {
+						"type": "string",
+						"example": "abcdefghjasd"
+					},
+					"observacoes": {
+						"type": "string",
+						"example": "Alérgico a alguma coisa"
+					},
+					"raca": {
+						"type": "string",
+						"example": "Pinshcer"
+					},
+					"nome_imagem": {
+						"type": "string",
+						"example": "iqekadas.jpg"
+					}
+				}
+			},
+			"PetArray": {
+				"type": "array",
+				"items": {
+					"$ref": "#/components/schemas/Pet"
+				}
+			},
+			"Usuario": {
+				"type": "object",
+				"required": [
+					"nome_completo",
+					"cpf",
+					"estado",
+					"cidade",
+					"bairro",
+					"logradouro",
+					"numero"
+				],
+				"properties": {
+					"nome_completo": {
+						"type": "string",
+						"example": "Fulano Ciclano Beltrano"
+					},
+					"cpf": {
+						"type": "string",
+						"example": "000.000.000-00"
+					},
+					"estado": {
+						"example": "SP",
+						"type": "string"
+					},
+					"cidade": {
+						"example": "São Paulo",
+						"type": "string"
+					},
+					"bairro": {
+						"example": "Vila Maria",
+						"type": "string"
+					},
+					"logradouro": {
+						"example": "Rua Estrela",
+						"type": "string"
+					},
+					"complemento": {
+						"example": "AP 12 BL 3",
+						"type": "string"
+					},
+					"numero": {
+						"example": 99,
+						"type": "number"
+					}
+				}
+			},
+			"UsuarioArray": {
+				"type": "array",
+				"items": {
+					"$ref": "#/components/schemas/Usuario"
+				}
+			},
+			"Estabelecimento": {
+				"example": {
+					"nome": "Miau Petshop",
+					"avaliacao_media": 4.5,
+					"descricao": "Um petshop preocupado com o bem-estar do seu pet",
+					"nome_imagens": ["aASIapQl.jpg", "PsQMnrtT.jpg"],
+					"estado": "SP",
+					"cidade": "São Paulo",
+					"bairro": "Vila Maria",
+					"logradouro": "Rua Estrela",
+					"complemento": "AP 12 BL 3",
+					"numero": 99
+				},
+				"type": "object",
+				"required": [
+					"nome",
+					"estado",
+					"cidade",
+					"bairro",
+					"logradouro",
+					"numero"
+				],
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"nome": {
+						"type": "string"
+					},
+					"avaliacao_media": {
+						"type": "number"
+					},
+					"descricao": {
+						"type": "string"
+					},
+					"nome_imagens": {
+						"type": "array"
+					},
+					"estado": {
+						"type": "string"
+					},
+					"cidade": {
+						"type": "string"
+					},
+					"bairro": {
+						"type": "string"
+					},
+					"logradouro": {
+						"type": "string"
+					},
+					"complemento": {
+						"type": "string"
+					},
+					"numero": {
+						"type": "number"
+					}
+				}
+			},
+			"EstabelecimentoArray": {
+				"type": "array",
+				"items": {
+					"$ref": "#/components/schemas/Estabelecimento"
+				}
+			},
+			"Reserva": {
+				"type": "object",
+				"required": ["data_horario", "servicos"],
+				"properties": {
+					"id": {
+						"type": "string",
+						"example": "MOpkDSmnA"
+					},
+					"data_horario": {
+						"type": "string",
+						"format": "timestamp",
+						"example": "1667515708"
+					},
+					"id_usuario": {
+						"type": "string",
+						"example": "PoRLERst"
+					},
+					"servicos": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ServicoArray"
+						}
+					}
+				}
+			},
+			"ReservaArray": {
+				"type": "array",
+				"items": {
+					"$ref": "#/components/schemas/Reserva"
+				}
+			},
+			"Servico": {
+				"type": "object",
+				"example": {
+					"id": "NoPLAqrsT",
+					"nome": "Tosa",
+					"preco": 99.90
+				},
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"nome": {
+						"type": "string"
+					},
+					"preco": {
+						"type": "number"
+					}
+				}
+			},
+			"ServicoArray": {
+				"type": "array",
+				"items": {
+					"$ref": "#/components/schemas/Servico"
+				}
+			}
+		},
+		"securitySchemes": {
+			"firebase": {
+				"type": "oauth2",
+				"flows": {
+					"implicit": {
+						"authorizationUrl": "www.google.com",
+						"scopes": {}
+					}
+				},
+				"x-google-issuer": "https://securetoken.google.com/peat-f2f94",
+				"x-google-jwks_uri": "https://www.googleapis.com/service_accounts/v1/metadata/x509/securetoken@system.gserviceaccount.com",
+				"x-google-audiences": "peat-f2f94"
+			}
+		}
+	}
+}

@@ -63,7 +63,9 @@ export const updateDoc = async <T extends Object>(
 		: await ref.get();
 
 	if (doc.exists) {
-		converter ? ref.withConverter(converter).update(docData) : ref.update(docData);
+		converter
+			? ref.withConverter(converter).set(docData, {merge: true})
+			: ref.set(docData, {merge: true});
 		return true;
 	} else return false;
 };

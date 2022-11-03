@@ -11,7 +11,8 @@ import { Model } from "./Model";
 export interface Estabelecimento {
 	id?: string,
 	nome: string;
-	avaliacoes: number[];
+	avaliacoes?: number[];
+	avaliacao_media?: number;
 	descricao: string;
 
 	estado: string;
