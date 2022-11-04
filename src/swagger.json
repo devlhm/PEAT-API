@@ -1130,6 +1130,29 @@
 			"Servico"
 		  ]
 		}
+	  },
+	  "/uploads/{image_name}": {
+		"parameters": [
+			{
+				"required": true,
+				"in": "path",
+				"name": "image_name",
+				"schema": {
+					"type": "string",
+					"minimum": 1,
+					"example": "DajSodN.png"
+				}
+			}
+		],
+		"get": {
+			"summary": "Retorna a imagem desejada",
+			"responses": {
+				"200": {
+					"description": "Ok"
+				}
+			},
+			"tags": ["Static"]
+		}
 	  }
 	},
 	"components": {
