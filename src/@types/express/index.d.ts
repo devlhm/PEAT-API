@@ -1,3 +1,4 @@
+import { Estabelecimento } from '../../models/EstabelecimentoModel';
 export {};
 
 declare global {
@@ -5,6 +6,7 @@ declare global {
 		interface Request {
 			userId: string;
 			picture: Multer.File;
+			estabelecimento: Estabelecimento
 		}
 	}
 }

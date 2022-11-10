@@ -43,6 +43,7 @@ const reservaConverter: FirebaseFirestore.FirestoreDataConverter<Reserva> = {
 		);
 
 		return {
+			id: snapshot.id,
 			data_horario: data.data_horario,
 			id_usuario: data.id_usuario,
 			servicos: data.servicos,

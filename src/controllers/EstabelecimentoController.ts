@@ -21,21 +21,32 @@ export class EstabelecimentoController extends ResourceController<Estabeleciment
 	}
 
 	protected async getOne(req: Request, res: Response): Promise<void> {
-		const doc = await this.model.find(req.params.id, req.userId);
+		let doc = await this.model.find(req.params.id, req.userId);
 
 		if (doc) {
-			const avaliacoes = doc.avaliacoes!
-			const sumAvaliacoes = avaliacoes.reduce((total, avaliacao) => total + avaliacao, 0);
-			const avaliacaoMedia = sumAvaliacoes / avaliacoes.length;
-			
-			doc.avaliacao_media = avaliacaoMedia;
-			delete doc.avaliacoes;
+			// if (doc.avaliacoes) {
+			// 	doc = this.setAvgRating(doc);
+			// }
 
 			res.status(200).json(doc);
 		} else {
 			res.status(404).json({ message: "Registro não encontrado" });
 		}
 	}
+
+	// private setAvgRating(estabelecimento: Estabelecimento): Estabelecimento {
+	// 	const avaliacoes = estabelecimento.avaliacoes!;
+	// 	const sumAvaliacoes = avaliacoes.reduce(
+	// 		(total, avaliacao) => total + avaliacao,
+	// 		0
+	// 	);
+	// 	const avaliacaoMedia = sumAvaliacoes / avaliacoes.length;
+
+	// 	estabelecimento.avaliacao_media = avaliacaoMedia;
+	// 	delete estabelecimento.avaliacoes;
+
+	// 	return estabelecimento;
+	// }
 
 	protected async getAll(req: Request, res: Response): Promise<void> {
 		let limit: number;
@@ -51,6 +62,11 @@ export class EstabelecimentoController extends ResourceController<Estabeleciment
 
 		const docs = await this.model.findAll(limit, offset);
 		if (docs) {
+			// docs.forEach((doc) => {
+			// 	if (doc.avaliacoes) {
+			// 		doc = this.setAvgRating(doc);
+			// 	}
+			// });
 			res.status(200).json(docs);
 		} else {
 			res.status(404).json({ message: "Registros não encontrados" });
@@ -101,9 +117,9 @@ export class EstabelecimentoController extends ResourceController<Estabeleciment
 		const estabelecimento = await this.model.find(req.params.id);
 
 		if (estabelecimento) {
-			const avaliacoes = estabelecimento.avaliacoes;
-			console.log(avaliacoes)
-			avaliacoes!.push(req.body.avaliacao);
+
+			const avaliacoes = estabelecimento.avaliacoes ?? [];
+			avaliacoes.push(req.body.avaliacao);
 
 			await this.model.update(
 				{ avaliacoes } as Estabelecimento,
@@ -114,7 +130,7 @@ export class EstabelecimentoController extends ResourceController<Estabeleciment
 			res.status(200).json({ message: "Avaliação salva" });
 		} else res.status(404).json({ message: "Registro não encontrado" });
 	}
-	
+
 	protected initializeRoutes(): void {
 		super.initializeRoutes();
 

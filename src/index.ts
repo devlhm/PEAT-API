@@ -5,6 +5,8 @@ import bodyParser from "body-parser";
 import multer from "multer";
 import path from "path";
 import swaggerUi from "swagger-ui-express";
+import cloudinary from "cloudinary";
+import formidable from "formidable";
 
 //controller imports
 import { PetController } from "./controllers/PetController";
@@ -26,6 +28,8 @@ app.use(cors());
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+cloudinary.v2.config()
 
 export const upload = multer({
 	storage: multer.diskStorage({
