@@ -52,7 +52,7 @@ app.use('/uploads', express.static(path.resolve(__dirname, '../uploads/')));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 app.use("/pet", checkAuth, new PetController().router);
-app.use("/estabelecimento", checkAuth, new EstabelecimentoController().router);
+app.use("/estabelecimento", new EstabelecimentoController().router);
 app.use("/usuario", checkAuth, new UsuarioController().router);
 app.use(
 	"/estabelecimento/:estabelecimento_id/servico/",
