@@ -1,6 +1,6 @@
 import { db } from "./firestore";
 
-export const addDoc = <T extends Object>(
+export const addDoc = async <T extends Object>(
 	path: string,
 	data: T,
 	converter?: FirebaseFirestore.FirestoreDataConverter<T>
@@ -9,9 +9,16 @@ export const addDoc = <T extends Object>(
 > => {
 	const collection = db.collection(path);
 
-	return converter
-		? collection.withConverter(converter).add(data)
-		: collection.add(data);
+	try {
+		return converter
+			? collection.withConverter(converter).add(data)
+			: collection.add(data);
+	} catch(err) {
+		console.error(err);
+		return converter
+			? collection.withConverter(converter).add(data)
+			: collection.add(data);
+	}
 };
 
 export const getDocById = async <T extends Object>(

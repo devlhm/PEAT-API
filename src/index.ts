@@ -55,12 +55,12 @@ app.use("/pet", checkAuth, new PetController().router);
 app.use("/estabelecimento", checkAuth, new EstabelecimentoController().router);
 app.use("/usuario", checkAuth, new UsuarioController().router);
 app.use(
-	"estabelecimento/:estabelecimento_id/servico/",
+	"/estabelecimento/:estabelecimento_id/servico/",
 	checkAuth,
 	new ServicoController().router
 );
 app.use(
-	"estabelecimento/:estabelecimento_id/reserva/",
+	"/estabelecimento/:estabelecimento_id/reserva/",
 	checkAuth,
 	new ReservaController().router
 );

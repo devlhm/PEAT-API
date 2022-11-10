@@ -9,22 +9,22 @@ import CollectionNames from "./CollectionNames";
 import { Model } from "./Model";
 import { Servico } from "./ServicoModel";
 import { db } from "./../firestore";
+import { Timestamp } from "@google-cloud/firestore"
 
 export interface Reserva {
 	id?: string;
-	data_horario: Date;
+	data_horario: string;
 	id_usuario: string;
-	servicos: Servico[] | FirebaseFirestore.DocumentReference[];
+	servicos: Servico[] | FirebaseFirestore.DocumentReference[] | string[];
 }
 
 const reservaConverter: FirebaseFirestore.FirestoreDataConverter<Reserva> = {
 	toFirestore(
 		modelObject: FirebaseFirestore.WithFieldValue<Reserva>
 	): FirebaseFirestore.DocumentData {
+
 		return {
-			data_horario: FirebaseFirestore.Timestamp.fromDate(
-				modelObject.data_horario as Date
-			),
+			data_horario: modelObject.data_horario,
 			id_usuario: modelObject.id_usuario,
 			servicos: modelObject.servicos,
 		};
@@ -43,7 +43,7 @@ const reservaConverter: FirebaseFirestore.FirestoreDataConverter<Reserva> = {
 		);
 
 		return {
-			data_horario: (data.data_horario as FirebaseFirestore.Timestamp).toDate(),
+			data_horario: data.data_horario,
 			id_usuario: data.id_usuario,
 			servicos: data.servicos,
 		} as Reserva;
@@ -52,18 +52,20 @@ const reservaConverter: FirebaseFirestore.FirestoreDataConverter<Reserva> = {
 
 export class ReservaModel implements Model<Reserva> {
 	setServicos(
-		servicos: Servico[],
+		servicos: string[],
 		parentId: string
 	): FirebaseFirestore.DocumentReference[] {
-		return servicos.map((ref) =>
-			db
+		return servicos.map((id) => {
+			const doc = db
 				.collection(
 					`${CollectionNames.ESTABELECIMENTO}/${parentId!}/${
 						CollectionNames.SERVICO
 					}`
 				)
-				.doc(ref.id!)
-		);
+				.doc(id);
+
+			return doc;
+		});
 	}
 
 	async getServicos(
@@ -125,18 +127,20 @@ export class ReservaModel implements Model<Reserva> {
 		FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData>
 	> {
 		docData.servicos = this.setServicos(
-			docData.servicos as Servico[],
+			docData.servicos as string[],
 			parentId!
 		);
+		console.log(docData);
 
 		return addDoc(this.getPath(parentId), docData, reservaConverter);
 	}
 
 	update(docData: Reserva, id: string, parentId?: string): Promise<boolean> {
-		docData.servicos = this.setServicos(
-			docData.servicos as Servico[],
-			parentId!
-		);
+		if (docData.servicos)
+			docData.servicos = this.setServicos(
+				docData.servicos as string[],
+				parentId!
+			);
 
 		return updateDoc(this.getPath(parentId), docData, id, reservaConverter);
 	}

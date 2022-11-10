@@ -6,8 +6,8 @@ export default (req: Request, res: Response, next: NextFunction) => {
 	// if(req.body.userId) {
 	// req.userId = req.body.userId;
 
-	if (req.headers.userid) {
-		req.userId = req.headers.userid as string;
+	if (req.headers.authorization) {
+		req.userId = req.headers.authorization as string;
 		next();
 	} else {
 		res.status(403).send("Unauthorized");

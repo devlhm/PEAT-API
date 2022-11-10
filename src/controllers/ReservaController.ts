@@ -7,6 +7,7 @@ export class ReservaController extends ResourceController<Reserva> {
 
 	protected async add(req: Request, res: Response): Promise<void> {
 		const docData = req.body.data;
+		docData.id_usuario = req.userId;
 
 		try {
 			await this.model.create(docData, req.params.estabelecimento_id);
