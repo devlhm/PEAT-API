@@ -100,7 +100,7 @@ export class EstabelecimentoController extends ResourceController<Estabeleciment
 		for (let i = 0; i < files.length; i++) {
 			const element = files[i];
 
-			fileNames.push(element.filename);
+			fileNames.push(element.path);
 		}
 
 		const result = await this.model.update(

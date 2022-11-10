@@ -72,7 +72,7 @@ export class PetController extends ResourceController<Pet> {
 
 	private async savePicturePath(req: Request, res: Response): Promise<void> {
 		const result = await this.model.update(
-			{ nome_imagem: req.file!.filename } as Pet,
+			{ nome_imagem: req.file!.path } as Pet,
 			req.params.id,
 			req.userId
 		);

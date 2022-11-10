@@ -5,8 +5,9 @@ import bodyParser from "body-parser";
 import multer from "multer";
 import path from "path";
 import swaggerUi from "swagger-ui-express";
-import cloudinary from "cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 import formidable from "formidable";
+import dotenv from "dotenv";
 
 //controller imports
 import { PetController } from "./controllers/PetController";
@@ -17,43 +18,34 @@ import { EstabelecimentoController } from "./controllers/EstabelecimentoControll
 import { ServicoController } from "./controllers/ServicoController";
 import { ReservaController } from "./controllers/ReservaController";
 import { UsuarioController } from "./controllers/UsuarioController";
-import swaggerDocs from './swagger.json'
+import swaggerDocs from "./swagger.json";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
 
 const PORT = process.env.PORT || 4000;
 
 const app = express();
 
 //config middlewares
+dotenv.config();
 app.use(cors());
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-cloudinary.v2.config()
+cloudinary.config({
+	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+	api_key: process.env.CLOUDINARY_API_KEY,
+	api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export const upload = multer({
-	storage: multer.diskStorage({
-		destination: function (req, file, cb) {
-			cb(null, "uploads/");
-		},
-		filename: function (req, file, cb) {
-			cb(null, Date.now() + path.extname(file.originalname));
-		},
-	}),
-	dest: "uploads/",
-	fileFilter: function (req, file, callback) {
-		var ext = path.extname(file.originalname);
-		if (ext !== ".png" && ext !== ".jpg" && ext !== ".gif" && ext !== ".jpeg") {
-			return callback(new Error("Only images are allowed"));
-		}
-		callback(null, true);
-	},
+	storage: new CloudinaryStorage({ cloudinary })
 });
 
 //routes
-app.use('/uploads', express.static(path.resolve(__dirname, '../uploads/')));
+app.use("/uploads", express.static(path.resolve(__dirname, "../uploads/")));
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use("/pet", checkAuth, new PetController().router);
 app.use("/estabelecimento", new EstabelecimentoController().router);

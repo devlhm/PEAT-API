@@ -13,12 +13,14 @@ const estabelecimentoConverter: FirebaseFirestore.FirestoreDataConverter<Estabel
 	toFirestore(
 		modelObject: FirebaseFirestore.WithFieldValue<Estabelecimento>
 	): FirebaseFirestore.DocumentData {
-		const coords = modelObject.coordenadas as {
-			lat: number,
-			long: number
+		if (modelObject.coordenadas) {
+			const coords = modelObject.coordenadas as {
+				lat: number,
+				long: number
+			}
+	
+			modelObject.coordenadas = new GeoPoint(coords.lat, coords.long);
 		}
-
-		modelObject.coordenadas = new GeoPoint(coords.lat, coords.long);
 
 		return modelObject;
 	},
