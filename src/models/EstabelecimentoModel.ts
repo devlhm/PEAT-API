@@ -9,48 +9,50 @@ import {
 import CollectionNames from "./CollectionNames";
 import { Model } from "./Model";
 
-const estabelecimentoConverter: FirebaseFirestore.FirestoreDataConverter<Estabelecimento> = {
-	toFirestore(
-		modelObject: FirebaseFirestore.WithFieldValue<Estabelecimento>
-	): FirebaseFirestore.DocumentData {
-		if (modelObject.coordenadas) {
-			const coords = modelObject.coordenadas as {
-				lat: number,
-				long: number
+const estabelecimentoConverter: FirebaseFirestore.FirestoreDataConverter<Estabelecimento> =
+	{
+		toFirestore(
+			modelObject: FirebaseFirestore.WithFieldValue<Estabelecimento>
+		): FirebaseFirestore.DocumentData {
+			if (modelObject.coordenadas) {
+				const coords = modelObject.coordenadas as {
+					lat: number;
+					long: number;
+				};
+
+				modelObject.coordenadas = new GeoPoint(coords.lat, coords.long);
 			}
-	
-			modelObject.coordenadas = new GeoPoint(coords.lat, coords.long);
-		}
 
-		return modelObject;
-	},
-	fromFirestore: function (
-		snapshot: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>
-	): Estabelecimento {
-		const data = snapshot.data() as Estabelecimento
-		const coords = data.coordenadas as GeoPoint;
+			return modelObject;
+		},
+		fromFirestore: function (
+			snapshot: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>
+		): Estabelecimento {
+			const data = snapshot.data() as Estabelecimento;
+			const coords = data.coordenadas as GeoPoint;
 
-		data.coordenadas = {
-			lat: coords.latitude,
-			long: coords.longitude
-		}
+			if (coords)
+				data.coordenadas = {
+					lat: coords.latitude,
+					long: coords.longitude,
+				};
 
-		const avaliacoes = data.avaliacoes ?? [];
-		const sumAvaliacoes = avaliacoes.reduce(
-			(total, avaliacao) => total + avaliacao,
-			0
-		);
-		const avaliacaoMedia = sumAvaliacoes / avaliacoes.length;
+			const avaliacoes = data.avaliacoes ?? [];
+			const sumAvaliacoes = avaliacoes.reduce(
+				(total, avaliacao) => total + avaliacao,
+				0
+			);
+			const avaliacaoMedia = sumAvaliacoes / avaliacoes.length;
 
-		data.avaliacao_media = avaliacaoMedia;
-		delete data.avaliacoes;
+			data.avaliacao_media = avaliacaoMedia;
+			delete data.avaliacoes;
 
-		return data;
-	},
-};
+			return data;
+		},
+	};
 
 export interface Estabelecimento {
-	id?: string,
+	id?: string;
 	nome: string;
 	avaliacoes?: number[];
 	avaliacao_media?: number;
@@ -64,16 +66,18 @@ export interface Estabelecimento {
 	numero: number;
 
 	nome_imagens?: string[];
-	coordenadas: {
-		lat: number,
-		long: number
-	} | FirebaseFirestore.GeoPoint
+	coordenadas:
+		| {
+				lat: number;
+				long: number;
+		  }
+		| FirebaseFirestore.GeoPoint;
 }
 
 export class EstabelecimentoModel implements Model<Estabelecimento> {
-    getPath(): string {
-        return CollectionNames.ESTABELECIMENTO;
-    }
+	getPath(): string {
+		return CollectionNames.ESTABELECIMENTO;
+	}
 
 	find(id: string): Promise<Estabelecimento | null> {
 		return getDocById(this.getPath(), id, estabelecimentoConverter);
@@ -83,7 +87,12 @@ export class EstabelecimentoModel implements Model<Estabelecimento> {
 		limit: number = 0,
 		offset: number = 0
 	): Promise<Estabelecimento[] | null> {
-		return getDocsFromCollection(this.getPath(), offset, limit, estabelecimentoConverter);
+		return getDocsFromCollection(
+			this.getPath(),
+			offset,
+			limit,
+			estabelecimentoConverter
+		);
 	}
 
 	create(
