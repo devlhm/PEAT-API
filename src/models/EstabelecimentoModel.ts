@@ -20,7 +20,10 @@ const estabelecimentoConverter: FirebaseFirestore.FirestoreDataConverter<Estabel
 					long: number;
 				};
 
-				modelObject.coordenadas = new GeoPoint(coords.lat, coords.long);
+				if(coords.lat && coords.long) {
+					console.log("lat: " + coords.lat);
+					modelObject.coordenadas = new GeoPoint(coords.lat, coords.long);
+				}
 			}
 
 			return modelObject;
