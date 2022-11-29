@@ -9,12 +9,8 @@ export class ReservaController extends ResourceController<Reserva> {
 		const docData = req.body.data;
 		docData.id_usuario = req.userId;
 
-		try {
-			await this.model.create(docData, req.params.estabelecimento_id);
-			res.sendStatus(200);
-		} catch (err) {
-			res.status(400).json({ message: err });
-		}
+		await this.model.create(docData, req.params.estabelecimento_id);
+		res.sendStatus(200);
 	}
 
 	protected async getOne(req: Request, res: Response): Promise<void> {
@@ -22,7 +18,6 @@ export class ReservaController extends ResourceController<Reserva> {
 			req.params.id,
 			req.params.estabelecimento_id
 		);
-
 		if (doc) {
 			res.status(200).json(doc);
 		} else {

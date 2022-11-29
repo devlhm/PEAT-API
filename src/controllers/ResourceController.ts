@@ -17,24 +17,44 @@ export abstract class ResourceController<T extends Object> {
 	protected abstract erase(req: Request, res: Response): Promise<void>;
 
 	protected initializeRoutes(): void {
-		this.router.get("/", (req: Request, res: Response) =>
-			this.getAll(req, res)
-		);
+		this.router.get("/", (req: Request, res: Response) => {
+			try {
+				this.getAll(req, res);
+			}  catch (err: any) {
+			res.status(500).json({message: err!.message, stack: err!.stack});
+		}
+		});
 
 		this.router.get("/:id", (req: Request, res: Response) => {
-			this.getOne(req, res);
+			try {
+				this.getOne(req, res);
+			}  catch (err: any) {
+			res.status(500).json({message: err!.message, stack: err!.stack});
+		}
 		});
 
 		this.router.post("/", (req: Request, res: Response) => {
-			this.add(req, res);
+			try {
+				this.add(req, res);
+			}  catch (err: any) {
+			res.status(500).json({message: err!.message, stack: err!.stack});
+		}
 		});
 
 		this.router.post("/:id", (req: Request, res: Response) => {
-			this.edit(req, res);
+			try {
+				this.edit(req, res);
+			}  catch (err: any) {
+			res.status(500).json({message: err!.message, stack: err!.stack});
+		}
 		});
 
 		this.router.delete("/:id", (req: Request, res: Response) => {
-			this.erase(req, res);
+			try {
+				this.erase(req, res);
+			}  catch (err: any) {
+			res.status(500).json({message: err!.message, stack: err!.stack});
+		}
 		});
 	}
 }

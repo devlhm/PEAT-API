@@ -71,14 +71,18 @@ export class PetController extends ResourceController<Pet> {
 	}
 
 	private async savePicturePath(req: Request, res: Response): Promise<void> {
-		const result = await this.model.update(
-			{ nome_imagem: req.file!.path } as Pet,
-			req.params.id,
-			req.userId
-		);
+		try {
+			const result = await this.model.update(
+				{ nome_imagem: req.file!.path } as Pet,
+				req.params.id,
+				req.userId
+			);
 
-		if (result) res.status(200).json({ message: "Imagem salva uploaded" });
-		else res.status(404).json({ message: "Registro não encontrado" });
+			if (result) res.status(200).json({ message: "Imagem salva uploaded" });
+			else res.status(404).json({ message: "Registro não encontrado" });
+		} catch (err: any) {
+			res.status(500).json({ message: err!.message, stack: err!.stack });
+		}
 	}
 
 	protected initializeRoutes(): void {

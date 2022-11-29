@@ -12,41 +12,19 @@ export class EstabelecimentoController extends ResourceController<Estabeleciment
 	protected async add(req: Request, res: Response): Promise<void> {
 		const docData = req.body.data;
 
-		try {
-			await this.model.create(docData);
-			res.sendStatus(200);
-		} catch (err) {
-			res.status(400).json({ message: err });
-		}
+		await this.model.create(docData);
+		res.sendStatus(200);
 	}
 
 	protected async getOne(req: Request, res: Response): Promise<void> {
 		let doc = await this.model.find(req.params.id, req.userId);
 
 		if (doc) {
-			// if (doc.avaliacoes) {
-			// 	doc = this.setAvgRating(doc);
-			// }
-
 			res.status(200).json(doc);
 		} else {
 			res.status(404).json({ message: "Registro não encontrado" });
 		}
 	}
-
-	// private setAvgRating(estabelecimento: Estabelecimento): Estabelecimento {
-	// 	const avaliacoes = estabelecimento.avaliacoes!;
-	// 	const sumAvaliacoes = avaliacoes.reduce(
-	// 		(total, avaliacao) => total + avaliacao,
-	// 		0
-	// 	);
-	// 	const avaliacaoMedia = sumAvaliacoes / avaliacoes.length;
-
-	// 	estabelecimento.avaliacao_media = avaliacaoMedia;
-	// 	delete estabelecimento.avaliacoes;
-
-	// 	return estabelecimento;
-	// }
 
 	protected async getAll(req: Request, res: Response): Promise<void> {
 		let limit: number;
@@ -62,11 +40,6 @@ export class EstabelecimentoController extends ResourceController<Estabeleciment
 
 		const docs = await this.model.findAll(limit, offset);
 		if (docs) {
-			// docs.forEach((doc) => {
-			// 	if (doc.avaliacoes) {
-			// 		doc = this.setAvgRating(doc);
-			// 	}
-			// });
 			res.status(200).json(docs);
 		} else {
 			res.status(404).json({ message: "Registros não encontrados" });
@@ -94,41 +67,48 @@ export class EstabelecimentoController extends ResourceController<Estabeleciment
 	}
 
 	private async savePicturesPath(req: Request, res: Response): Promise<void> {
-		const files = req.files! as Express.Multer.File[];
-		const fileNames: string[] = [];
+		try {
+			const files = req.files! as Express.Multer.File[];
+			const fileNames: string[] = [];
 
-		for (let i = 0; i < files.length; i++) {
-			const element = files[i];
+			for (let i = 0; i < files.length; i++) {
+				const element = files[i];
 
-			fileNames.push(element.path);
-		}
+				fileNames.push(element.path);
+			}
 
-		const result = await this.model.update(
-			{ nome_imagens: fileNames } as Estabelecimento,
-			req.params.id,
-			req.userId
-		);
-
-		if (result) res.status(200).json({ message: "Imagem salva" });
-		else res.status(404).json({ message: "Registro não encontrado" });
-	}
-
-	private async addRating(req: Request, res: Response): Promise<void> {
-		const estabelecimento = await this.model.find(req.params.id);
-
-		if (estabelecimento) {
-
-			const avaliacoes = estabelecimento.avaliacoes ?? [];
-			avaliacoes.push(req.body.avaliacao);
-
-			await this.model.update(
-				{ avaliacoes } as Estabelecimento,
+			const result = await this.model.update(
+				{ nome_imagens: fileNames } as Estabelecimento,
 				req.params.id,
 				req.userId
 			);
 
-			res.status(200).json({ message: "Avaliação salva" });
-		} else res.status(404).json({ message: "Registro não encontrado" });
+			if (result) res.status(200).json({ message: "Imagem salva" });
+			else res.status(404).json({ message: "Registro não encontrado" });
+		} catch (err: any) {
+			res.status(500).json({message: err!.message, stack: err!.stack});
+		}
+	}
+
+	private async addRating(req: Request, res: Response): Promise<void> {
+		try {
+			const estabelecimento = await this.model.find(req.params.id);
+
+			if (estabelecimento) {
+				const avaliacoes = estabelecimento.avaliacoes ?? [];
+				avaliacoes.push(req.body.avaliacao);
+
+				await this.model.update(
+					{ avaliacoes } as Estabelecimento,
+					req.params.id,
+					req.userId
+				);
+
+				res.status(200).json({ message: "Avaliação salva" });
+			} else res.status(404).json({ message: "Registro não encontrado" });
+		} catch (err: any) {
+			res.status(500).json({message: err!.message, stack: err!.stack});
+		}
 	}
 
 	protected initializeRoutes(): void {
