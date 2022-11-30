@@ -40,8 +40,12 @@ export class ReservaModel implements Model<Reserva> {
 	): Promise<Servico[]> {
 		const arr: Servico[] = [];
 
-		for await (const ref of servicos)
+
+		for await (const ref of servicos) {
+			console.log("ref: ");
+			console.log(ref.id)
 			arr.push((await ref.get()).data() as Servico);
+		}
 
 		return arr;
 	}

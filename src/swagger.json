@@ -457,6 +457,32 @@
 				"tags": ["Usuario"]
 			}
 		},
+		"/usuario/reservas": {
+			"get": {
+				"security": [
+					{
+						"firebase": []
+					}
+				],
+				"summary": "Retorna todas reservas de um usuário",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ReservaArray"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized"
+					}
+				},
+				"tags": ["Usuario"]
+			}
+		},
 		"/estabelecimento": {
 			"post": {
 				"security": [

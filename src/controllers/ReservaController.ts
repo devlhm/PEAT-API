@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { Reserva, ReservaModel } from "../models/ReservaModel";
 import { ResourceController } from "./ResourceController";
+import { UsuarioModel } from '../models/UsuarioModel';
+import CollectionNames from './../models/CollectionNames';
 
 export class ReservaController extends ResourceController<Reserva> {
 	protected model = new ReservaModel();
@@ -10,7 +12,11 @@ export class ReservaController extends ResourceController<Reserva> {
 		docData.id_usuario = req.userId;
 
 		try {
-			await this.model.create(docData, req.params.estabelecimento_id);
+			const result = await this.model.create(docData, req.params.estabelecimento_id);
+			if(result) {
+				const ref = result as FirebaseFirestore.DocumentReference;
+				await new UsuarioModel().addReserva(ref, req.userId);
+			}
 			res.sendStatus(200);
 		} catch (err: any) {
 			res.status(500).json({ message: err!.message, stack: err!.stack });
@@ -56,12 +62,16 @@ export class ReservaController extends ResourceController<Reserva> {
 	}
 
 	protected async erase(req: Request, res: Response): Promise<void> {
+		const id = req.params.id;
+		const estabelecimentoId = req.params.estabelecimento_id;
+
 		const result = await this.model.remove(
-			req.params.id,
-			req.params.estabelecimento_id
+			id,
+			estabelecimentoId
 		);
 
 		if (result) {
+			await new UsuarioModel().removeReserva(`${CollectionNames.ESTABELECIMENTO}/${estabelecimentoId}/${CollectionNames.RESERVA}`, id, req.userId);
 			res.sendStatus(200);
 		} else {
 			res.status(404).json({ message: "Registro não encontrado" });

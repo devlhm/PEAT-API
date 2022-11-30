@@ -5,11 +5,10 @@ import { Usuario, UsuarioModel } from "../models/UsuarioModel";
 import { ResourceController } from "./ResourceController";
 
 export class UsuarioController extends ResourceController<Usuario> {
-	protected model: Model<Usuario> = new UsuarioModel();
+	protected model: UsuarioModel = new UsuarioModel();
 
 	protected async add(req: Request, res: Response): Promise<void> {
 		const docData = req.body.data;
-		console.log(req.userId);
 
 		try {
 			await this.model.create(docData, req.userId);
@@ -20,7 +19,7 @@ export class UsuarioController extends ResourceController<Usuario> {
 	}
 
 	protected async getOne(req: Request, res: Response): Promise<void> {
-		const doc = await this.model.find(req.params.id, req.userId);
+		const doc = await this.model.find(req.params.id);
 
 		if (doc) {
 			res.status(200).json(doc);
@@ -67,5 +66,19 @@ export class UsuarioController extends ResourceController<Usuario> {
 		} else {
 			res.status(404).json({ message: "Registro não encontrado" });
 		}
+	}
+
+	private async getReservasFromUsuario(req: Request, res: Response): Promise<void> {
+		const reservas = await this.model.getReservas(req.userId);
+		console.log(reservas);
+		res.status(200).json({reservas});
+	}
+
+	protected initializeRoutes(): void {
+		this.router.get("/reservas", (req, res) => {
+			this.getReservasFromUsuario(req, res);
+		});
+
+		super.initializeRoutes();
 	}
 }
