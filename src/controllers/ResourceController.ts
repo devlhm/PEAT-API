@@ -20,41 +20,41 @@ export abstract class ResourceController<T extends Object> {
 		this.router.get("/", (req: Request, res: Response) => {
 			try {
 				this.getAll(req, res);
-			}  catch (err: any) {
-			res.status(500).json({message: err!.message, stack: err!.stack});
-		}
+			} catch (err: any) {
+				res.status(500).json({ message: err!.message, stack: err!.stack });
+			}
 		});
 
 		this.router.get("/:id", (req: Request, res: Response) => {
 			try {
 				this.getOne(req, res);
-			}  catch (err: any) {
-			res.status(500).json({message: err!.message, stack: err!.stack});
-		}
+			} catch (err: any) {
+				res.status(500).json({ message: err!.message, stack: err!.stack });
+			}
 		});
 
 		this.router.post("/", (req: Request, res: Response) => {
 			try {
 				this.add(req, res);
-			}  catch (err: any) {
-			res.status(500).json({message: err!.message, stack: err!.stack});
-		}
+			} catch (err: any) {
+				res.status(500).json({ message: err!.message, stack: err!.stack });
+			}
 		});
 
 		this.router.post("/:id", (req: Request, res: Response) => {
 			try {
 				this.edit(req, res);
-			}  catch (err: any) {
-			res.status(500).json({message: err!.message, stack: err!.stack});
-		}
+			} catch (err: any) {
+				res.status(500).json({ message: err!.message, stack: err!.stack });
+			}
 		});
 
 		this.router.delete("/:id", (req: Request, res: Response) => {
 			try {
 				this.erase(req, res);
-			}  catch (err: any) {
-			res.status(500).json({message: err!.message, stack: err!.stack});
-		}
+			} catch (err: any) {
+				res.status(500).json({ message: err!.message, stack: err!.stack });
+			}
 		});
 	}
 }

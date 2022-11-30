@@ -12,8 +12,12 @@ export class EstabelecimentoController extends ResourceController<Estabeleciment
 	protected async add(req: Request, res: Response): Promise<void> {
 		const docData = req.body.data;
 
-		await this.model.create(docData);
-		res.sendStatus(200);
+		try {
+			await this.model.create(docData);
+			res.sendStatus(200);
+		} catch (err: any) {
+			res.status(500).json({ message: err!.message, stack: err!.stack });
+		}
 	}
 
 	protected async getOne(req: Request, res: Response): Promise<void> {
@@ -30,13 +34,8 @@ export class EstabelecimentoController extends ResourceController<Estabeleciment
 		let limit: number;
 		let offset: number;
 
-		try {
-			limit = req.query.limit ? parseInt(req.query.limit as string) : 0;
-			offset = req.query.offset ? parseInt(req.query.offset as string) : 0;
-		} catch (err) {
-			res.status(400).json({ message: err });
-			return;
-		}
+		limit = req.query.limit ? parseInt(req.query.limit as string) : 0;
+		offset = req.query.offset ? parseInt(req.query.offset as string) : 0;
 
 		const docs = await this.model.findAll(limit, offset);
 		if (docs) {
@@ -86,7 +85,7 @@ export class EstabelecimentoController extends ResourceController<Estabeleciment
 			if (result) res.status(200).json({ message: "Imagem salva" });
 			else res.status(404).json({ message: "Registro não encontrado" });
 		} catch (err: any) {
-			res.status(500).json({message: err!.message, stack: err!.stack});
+			res.status(500).json({ message: err!.message, stack: err!.stack });
 		}
 	}
 
@@ -107,7 +106,7 @@ export class EstabelecimentoController extends ResourceController<Estabeleciment
 				res.status(200).json({ message: "Avaliação salva" });
 			} else res.status(404).json({ message: "Registro não encontrado" });
 		} catch (err: any) {
-			res.status(500).json({message: err!.message, stack: err!.stack});
+			res.status(500).json({ message: err!.message, stack: err!.stack });
 		}
 	}
 

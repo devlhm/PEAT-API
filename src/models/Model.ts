@@ -10,11 +10,10 @@ export interface Model<T> {
 		docData: T,
 		id?: string,
 		parentId?: string | undefined
-	) =>
-		| Promise<
-				FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData>
-		  >
-		| Promise<Boolean>;
+	) => Promise<
+		| FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData>
+		| boolean
+	>;
 	update: (
 		docData: T,
 		id: string,

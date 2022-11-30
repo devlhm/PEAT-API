@@ -9,12 +9,13 @@ export class UsuarioController extends ResourceController<Usuario> {
 
 	protected async add(req: Request, res: Response): Promise<void> {
 		const docData = req.body.data;
+		console.log(req.userId);
 
 		try {
 			await this.model.create(docData, req.userId);
 			res.sendStatus(200);
-		} catch (err) {
-			res.status(400).json({ message: err });
+		} catch (err: any) {
+			res.status(500).json({ message: err!.message, stack: err!.stack });
 		}
 	}
 

@@ -39,7 +39,7 @@ cloudinary.config({
 });
 
 export const upload = multer({
-	storage: new CloudinaryStorage({ cloudinary })
+	storage: new CloudinaryStorage({ cloudinary }),
 });
 
 //routes
@@ -52,12 +52,10 @@ app.use("/estabelecimento", new EstabelecimentoController().router);
 app.use("/usuario", checkAuth, new UsuarioController().router);
 app.use(
 	"/estabelecimento/:estabelecimento_id/servico/",
-	checkAuth,
 	new ServicoController().router
 );
 app.use(
-	"/estabelecimento/:estabelecimento_id/reserva/",
-	checkAuth,
+	"/estabelecimento/:estabelecimento_id/reserva/", checkAuth,
 	new ReservaController().router
 );
 

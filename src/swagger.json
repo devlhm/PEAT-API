@@ -21,7 +21,7 @@
 							},
 							"example": {
 								"data": {
-									"name": "Totó",
+									"nome": "Totó",
 									"raca": "Pinshcer",
 									"observacoes": "Alérgico à alguma coisa"
 								}
@@ -131,7 +131,7 @@
 							"schema": {
 								"type": "object",
 								"properties": {
-									"file": {
+									"picture": {
 										"type": "string",
 										"format": "binary"
 									}
@@ -193,7 +193,7 @@
 							},
 							"example": {
 								"data": {
-									"name": "Totó",
+									"nome": "Totó",
 									"raca": "Pinshcer",
 									"observacoes": "Alérgico à alguma coisa"
 								}
@@ -221,14 +221,14 @@
 								"example": [
 									{
 										"id": "DagASvfQ",
-										"name": "Totó",
+										"nome": "Totó",
 										"raca": "Pinshcer",
 										"observacoes": "Alérgico à alguma coisa",
 										"nome_imagem": "asfjaskj2139dk.jpg"
 									},
 									{
 										"id": "GaVQgwgS",
-										"name": "Lulu",
+										"nome": "Lulu",
 										"raca": "Buldogue",
 										"observacoes": "Preto com listras brancas",
 										"nome_imagem": "qwieoqwi.jpg"
@@ -489,12 +489,15 @@
 									"nome": "Miau Petshop",
 									"avaliacao_media": 4.5,
 									"descricao": "Um petshop preocupado com o bem-estar do seu pet",
-									"nome_imagens": ["aASIapQl.jpg", "PsQMnrtT.jpg"],
 									"estado": "SP",
 									"cidade": "São Paulo",
 									"bairro": "Vila Maria",
 									"logradouro": "Rua Estrela",
 									"complemento": "AP 12 BL 3",
+									"coordenadas": {
+										"lat": 0,
+										"long": 0
+									},
 									"numero": 99
 								}
 							}
@@ -546,12 +549,15 @@
 									"nome": "Miau Petshop",
 									"avaliacao_media": 4.5,
 									"descricao": "Um petshop preocupado com o bem-estar do seu pet",
-									"nome_imagens": ["aASIapQl.jpg", "PsQMnrtT.jpg"],
 									"estado": "SP",
 									"cidade": "São Paulo",
 									"bairro": "Vila Maria",
 									"logradouro": "Rua Estrela",
 									"complemento": "AP 12 BL 3",
+									"coordenadas": {
+										"lat": 0,
+										"long": 0
+									},
 									"numero": 99
 								}
 							}
@@ -660,7 +666,7 @@
 							"schema": {
 								"type": "object",
 								"properties": {
-									"imagem": {
+									"pictures": {
 										"type": "string",
 										"format": "binary"
 									}
@@ -1296,6 +1302,10 @@
 					"bairro": "Vila Maria",
 					"logradouro": "Rua Estrela",
 					"complemento": "AP 12 BL 3",
+					"coordenadas": {
+						"lat": 0,
+						"long": 0
+					},
 					"numero": 99
 				},
 				"type": "object",

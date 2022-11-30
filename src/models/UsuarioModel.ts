@@ -34,7 +34,7 @@ export class UsuarioModel implements Model<Usuario> {
 		return getDocsFromCollection(this.getPath(), offset, limit);
 	}
 
-	async create(docData: Usuario, id?: string): Promise<Boolean> {
+	async create(docData: Usuario, id?: string): Promise<boolean> {
 		const ref = db.collection(`${CollectionNames.USUARIO}`).doc(id!);
 
 		if ((await ref.get()).exists) return false;

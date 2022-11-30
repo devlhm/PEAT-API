@@ -38,7 +38,7 @@ export class PetModel implements Model<Pet> {
 		docData: Pet,
 		parentId?: string
 	): Promise<
-		FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData>
+		FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData> | boolean
 	> {
 		return addDoc(this.getPath(parentId), docData);
 	}
@@ -51,7 +51,3 @@ export class PetModel implements Model<Pet> {
 		return deleteDoc(this.getPath(parentId), id);
 	}
 }
-
-// TODO: ADICIONAR SERVIMENTO ESTÁTICO DAS IMAGENS DO PET E ESTABELECIMENTO
-// TODO: SALVAR CAMINHO DA IMAGEM NO BANCO DE DADOS
-// TODO: SALVAR IMAGEM NO SERVIDOR

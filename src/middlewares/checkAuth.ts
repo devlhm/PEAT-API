@@ -3,8 +3,6 @@ import firebase from "firebase-admin";
 
 export default (req: Request, res: Response, next: NextFunction) => {
 	//TODO: REMOVER ISSO QUANDO NÃO PRECISAR MAIS
-	// if(req.body.userId) {
-	// req.userId = req.body.userId;
 
 	if (req.headers.authorization) {
 		req.userId = req.headers.authorization as string;

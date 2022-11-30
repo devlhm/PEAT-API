@@ -12,8 +12,8 @@ export class ServicoController extends ResourceController<Servico> {
 		try {
 			await this.model.create(docData, req.params.estabelecimento_id);
 			res.sendStatus(200);
-		} catch (err) {
-			res.status(400).json({ message: err });
+		} catch(err: any) {
+			res.status(500).json({ message: err!.message, stack: err!.stack });
 		}
 	}
 

@@ -12,21 +12,20 @@ import { Model } from "./Model";
 const estabelecimentoConverter: FirebaseFirestore.FirestoreDataConverter<Estabelecimento> =
 	{
 		toFirestore(
-			modelObject: FirebaseFirestore.WithFieldValue<Estabelecimento>
+			estabelecimento: Estabelecimento
 		): FirebaseFirestore.DocumentData {
-			if (modelObject.coordenadas) {
-				const coords = modelObject.coordenadas as {
+			const doc = {...estabelecimento}
+
+			if (doc.coordenadas) {
+				const coords = doc.coordenadas as {
 					lat: number;
 					long: number;
 				};
 
-				if(coords.lat && coords.long) {
-					console.log("lat: " + coords.lat);
-					modelObject.coordenadas = new GeoPoint(coords.lat, coords.long);
-				}
+				doc.coordenadas = new GeoPoint(coords.lat, coords.long);
 			}
 
-			return modelObject;
+			return doc;
 		},
 		fromFirestore: function (
 			snapshot: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>
@@ -102,7 +101,7 @@ export class EstabelecimentoModel implements Model<Estabelecimento> {
 		docData: Estabelecimento
 	): Promise<
 		FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData>
-	> {
+		| boolean>  {
 		return addDoc(this.getPath(), docData, estabelecimentoConverter);
 	}
 

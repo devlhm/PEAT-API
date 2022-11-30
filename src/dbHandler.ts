@@ -5,20 +5,14 @@ export const addDoc = async <T extends Object>(
 	data: T,
 	converter?: FirebaseFirestore.FirestoreDataConverter<T>
 ): Promise<
-	FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData>
+	FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData> | boolean
 > => {
 	const collection = db.collection(path);
 
-	try {
-		return converter
-			? collection.withConverter(converter).add(data)
-			: collection.add(data);
-	} catch(err) {
-		console.error(err);
-		return converter
-			? collection.withConverter(converter).add(data)
-			: collection.add(data);
-	}
+	return converter != undefined
+		? collection.withConverter(converter).add(data)
+		: collection.add(data);
+	if (false) return false;
 };
 
 export const getDocById = async <T extends Object>(
@@ -71,8 +65,8 @@ export const updateDoc = async <T extends Object>(
 
 	if (doc.exists) {
 		converter
-			? ref.withConverter(converter).set(docData, {merge: true})
-			: ref.set(docData, {merge: true});
+			? ref.withConverter(converter).set(docData, { merge: true })
+			: ref.set(docData, { merge: true });
 		return true;
 	} else return false;
 };

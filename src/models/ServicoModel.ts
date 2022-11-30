@@ -35,7 +35,7 @@ export class ServicoModel implements Model<Servico> {
 		docData: Servico,
 		parentId?: string
 	): Promise<
-		FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData>
+		FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData> | boolean
 	> {
 		return addDoc(this.getPath(parentId), docData);
 	}

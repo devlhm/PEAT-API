@@ -11,8 +11,8 @@ export class PetController extends ResourceController<Pet> {
 		try {
 			await this.model.create(docData, req.userId);
 			res.sendStatus(200);
-		} catch (err) {
-			res.status(400).json({ message: err });
+		} catch(err: any) {
+			res.status(500).json({ message: err!.message, stack: err!.stack });
 		}
 	}
 
