@@ -60,6 +60,8 @@ export class UsuarioModel implements Model<Usuario> {
 		const userData = userDoc.data()! as Usuario;
 		const reservaModel = new ReservaModel();
 
+		if(!userData.reservas) return [];
+
 		const reservaArray = await Promise.all(
 			userData.reservas.map(
 				async (reserva: FirebaseFirestore.DocumentReference) => {
