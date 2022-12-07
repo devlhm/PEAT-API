@@ -60,23 +60,26 @@ export class UsuarioModel implements Model<Usuario> {
 		const userData = userDoc.data()! as Usuario;
 		const reservaModel = new ReservaModel();
 
-		if(!userData.reservas) return [];
+		if (!userData.reservas) return [];
 
-		const reservaArray = await Promise.all(
-			userData.reservas.map(
-				async (reserva: FirebaseFirestore.DocumentReference) => {
-					const reservaData = (await reserva.get()).data() as Reserva;
-					console.log(reservaData.servicos)
-					reservaData.servicos = await reservaModel.getServicos(
-						reservaData.servicos as FirebaseFirestore.DocumentReference[]
-					);
-					console.log(reservaData.servicos)
-					return reservaData;
-				}
-			)
-		);
+		try {
+			const reservaArray = await Promise.all(
+				userData.reservas.map(
+					async (reserva: FirebaseFirestore.DocumentReference) => {
+						const reservaData = (await reserva.get()).data() as Reserva;
 
-		return reservaArray;
+						reservaData.servicos = await reservaModel.getServicos(
+							reservaData.servicos as FirebaseFirestore.DocumentReference[]
+						);
+						console.log(reservaData.servicos);
+						return reservaData;
+					}
+				)
+			);
+			return reservaArray;
+		} catch (err) {
+			throw err;
+		}
 	}
 
 	public async addReserva(
@@ -89,7 +92,11 @@ export class UsuarioModel implements Model<Usuario> {
 		);
 	}
 
-	public async removeReserva(reservaCollection: string, reservaId: string, id: string) {
+	public async removeReserva(
+		reservaCollection: string,
+		reservaId: string,
+		id: string
+	) {
 		const reservaRef = db.collection(reservaCollection).doc(reservaId);
 		await this.update(
 			{ reservas: firebase.firestore.FieldValue.arrayRemove(reservaRef) },

@@ -68,10 +68,17 @@ export class UsuarioController extends ResourceController<Usuario> {
 		}
 	}
 
-	private async getReservasFromUsuario(req: Request, res: Response): Promise<void> {
-		const reservas = await this.model.getReservas(req.userId);
-		console.log(reservas);
-		res.status(200).json({reservas});
+	private async getReservasFromUsuario(
+		req: Request,
+		res: Response
+	): Promise<void> {
+		try {
+			const reservas = await this.model.getReservas(req.userId);
+			res.status(200).json({ reservas });
+		} catch (err) {
+			if (err instanceof Error) res.status(400).json({ message: err.message, stack: err.stack});
+			else res.sendStatus(500);
+		}
 	}
 
 	protected initializeRoutes(): void {

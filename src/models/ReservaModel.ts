@@ -42,9 +42,10 @@ export class ReservaModel implements Model<Reserva> {
 
 
 		for await (const ref of servicos) {
-			console.log("ref: ");
 			console.log(ref.id)
-			arr.push((await ref.get()).data() as Servico);
+			const servico = await ref.get();
+			if(!servico.exists) throw new Error("Servico não existe");
+			arr.push(servico.data() as Servico);
 		}
 
 		return arr;
