@@ -13,10 +13,8 @@ export class EstabelecimentoController extends ResourceController<Estabeleciment
 		const docData = req.body.data;
 
 		try {
-			const document = await this.model.create(docData);
-			const result = (await document.get()).data();
-			
-			res.status(200).json(result);
+			const documentReference = await this.model.create(docData);
+			return res.status(200).json({ id: documentReference.id });
 		} catch (err: any) {
 			res.status(500).json({ message: err!.message, stack: err!.stack });
 		}
