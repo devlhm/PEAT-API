@@ -6,6 +6,7 @@ import {
 import { ResourceController } from "./ResourceController";
 import { Model } from "../models/Model";
 import { upload } from "./../index";
+import { DocumentReference } from "firebase-admin/firestore";
 export class EstabelecimentoController extends ResourceController<Estabelecimento> {
 	protected model: Model<Estabelecimento> = new EstabelecimentoModel();
 
@@ -14,7 +15,8 @@ export class EstabelecimentoController extends ResourceController<Estabeleciment
 
 		try {
 			const documentReference = await this.model.create(docData);
-			return res.status(200).json({ id: documentReference.id });
+			const docId = (documentReference as DocumentReference).id;
+			res.status(200).json({ id: docId });
 		} catch (err: any) {
 			res.status(500).json({ message: err!.message, stack: err!.stack });
 		}

@@ -5,14 +5,13 @@ export const addDoc = async <T extends Object>(
 	data: T,
 	converter?: FirebaseFirestore.FirestoreDataConverter<T>
 ): Promise<
-	FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData> | boolean
+	FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData>
 > => {
 	const collection = db.collection(path);
 
 	return converter != undefined
 		? collection.withConverter(converter).add(data)
 		: collection.add(data);
-	if (false) return false;
 };
 
 export const getDocById = async <T extends Object>(
