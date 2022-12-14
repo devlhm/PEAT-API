@@ -14,7 +14,7 @@ export class EstabelecimentoController extends ResourceController<Estabeleciment
 
 		try {
 			let doc = await this.model.create(docData);
-			res.status(200).json(doc);
+			res.status(200).json(doc.data());
 		} catch (err: any) {
 			res.status(500).json({ message: err!.message, stack: err!.stack });
 		}
